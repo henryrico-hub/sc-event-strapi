@@ -1,0 +1,60 @@
+{
+  "kind": "collectionType",
+  "collectionName": "participants",
+  "info": {
+    "singularName": "participant",
+    "pluralName": "participants",
+    "displayName": "participant",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "paternal_surname": {
+      "type": "string"
+    },
+    "maternal_surname": {
+      "type": "string"
+    },
+    "birthdate": {
+      "type": "date"
+    },
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "Femenino",
+        "Masculino"
+      ]
+    },
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event",
+      "inversedBy": "participants"
+    },
+    "payment": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "statusP": {
+      "type": "enumeration",
+      "enum": [
+        "Pending",
+        "Complete"
+      ],
+      "default": "Pending"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "article_scs",
+  "info": {
+    "singularName": "article-sc",
+    "pluralName": "article-scs",
+    "displayName": "Article_sc",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "url": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "img_main": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "event_category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event-category.event-category",
+      "inversedBy": "article_scs"
+    },
+    "art_body": {
+      "type": "blocks"
+    },
+    "date": {
+      "type": "date"
+    },
+    "author_sc": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::author-sc.author-sc",
+      "inversedBy": "article_scs"
+    },
+    "claps": {
+      "type": "integer"
+    }
+  }
+}

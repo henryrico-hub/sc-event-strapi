@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_evento_distancias",
+  "info": {
+    "displayName": "Distancias",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "precio": {
+      "type": "string"
+    }
+  }
+}

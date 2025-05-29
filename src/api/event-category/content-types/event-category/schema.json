@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_categories",
+  "info": {
+    "singularName": "event-category",
+    "pluralName": "event-categories",
+    "displayName": "Event_Category",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "description": {
+      "type": "text"
+    },
+    "event_category_fks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event.event",
+      "mappedBy": "category"
+    },
+    "name_en": {
+      "type": "string"
+    },
+    "article_scs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::article-sc.article-sc",
+      "mappedBy": "event_category"
+    }
+  }
+}
