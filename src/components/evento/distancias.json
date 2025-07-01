@@ -2,12 +2,16 @@
   "collectionName": "components_evento_distancias",
   "info": {
     "displayName": "Distancias",
-    "icon": "bulletList"
+    "icon": "bulletList",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "precio": {
       "type": "string"
+    },
+    "fd": {
+      "type": "boolean"
     }
   }
 }

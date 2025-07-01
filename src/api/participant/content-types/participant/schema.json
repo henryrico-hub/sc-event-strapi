@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "attributes": {
     "name": {
@@ -21,7 +21,7 @@
     "maternal_surname": {
       "type": "string"
     },
-    "birthdate": {
+    "birthday": {
       "type": "date"
     },
     "gender": {
@@ -43,9 +43,7 @@
       "required": false,
       "allowedTypes": [
         "images",
-        "files",
-        "videos",
-        "audios"
+        "files"
       ]
     },
     "statusP": {
@@ -55,6 +53,18 @@
         "Complete"
       ],
       "default": "Pending"
+    },
+    "categoryP": {
+      "type": "string"
+    },
+    "participant_number": {
+      "type": "integer"
+    },
+    "package": {
+      "type": "string"
+    },
+    "size": {
+      "type": "string"
     }
   }
 }

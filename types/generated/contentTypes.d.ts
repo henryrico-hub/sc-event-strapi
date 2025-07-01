@@ -459,6 +459,8 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     >;
     category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
     ceo: Schema.Attribute.DynamicZone<['shared.seo', 'shared.rich-text']>;
+    color: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::color-picker.color'>;
     cover: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -582,6 +584,37 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiEventCategoryScEventCategorySc
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'event_category_scs';
+  info: {
+    description: '';
+    displayName: 'event_category_sc';
+    pluralName: 'event-category-scs';
+    singularName: 'event-category-sc';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::event-category-sc.event-category-sc'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiEventCategoryEventCategory
   extends Struct.CollectionTypeSchema {
   collectionName: 'event_categories';
@@ -654,6 +687,15 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
         number
       > &
       Schema.Attribute.DefaultTo<0>;
+    consecNumberPart: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -664,6 +706,10 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     distance: Schema.Attribute.String;
     distance_category: Schema.Attribute.Blocks;
     elev_gain: Schema.Attribute.String;
+    event_category_scs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::event-category-sc.event-category-sc'
+    >;
     img_desc1: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     img_desc2: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     img_main: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
@@ -671,7 +717,10 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
       Schema.Attribute.Private;
+    main_color: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::color-picker.color'>;
     name: Schema.Attribute.String;
+    packages: Schema.Attribute.Relation<'oneToMany', 'api::package.package'>;
     participants: Schema.Attribute.Relation<
       'oneToMany',
       'api::participant.participant'
@@ -684,6 +733,10 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     >;
     registration_prices: Schema.Attribute.Blocks;
     services: Schema.Attribute.Blocks;
+    services_scs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service.service'
+    >;
     state: Schema.Attribute.Relation<'manyToOne', 'api::state.state'>;
     transfer_payment: Schema.Attribute.Blocks;
     updatedAt: Schema.Attribute.DateTime;
@@ -753,6 +806,44 @@ export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPackagePackage extends Struct.CollectionTypeSchema {
+  collectionName: 'packages';
+  info: {
+    description: '';
+    displayName: 'package';
+    pluralName: 'packages';
+    singularName: 'package';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images', true>;
+    jersey: Schema.Attribute.Boolean;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::package.package'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    price: Schema.Attribute.Decimal;
+    publishedAt: Schema.Attribute.DateTime;
+    size_jerseys: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::size-jersey.size-jersey'
+    >;
+    slug: Schema.Attribute.UID<'name'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiParticipantParticipant extends Struct.CollectionTypeSchema {
   collectionName: 'participants';
   info: {
@@ -762,10 +853,11 @@ export interface ApiParticipantParticipant extends Struct.CollectionTypeSchema {
     singularName: 'participant';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
-    birthdate: Schema.Attribute.Date;
+    birthday: Schema.Attribute.Date;
+    categoryP: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -779,14 +871,75 @@ export interface ApiParticipantParticipant extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     maternal_surname: Schema.Attribute.String;
     name: Schema.Attribute.String & Schema.Attribute.Required;
+    package: Schema.Attribute.String;
+    participant_number: Schema.Attribute.Integer;
     paternal_surname: Schema.Attribute.String;
-    payment: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    >;
+    payment: Schema.Attribute.Media<'images' | 'files', true>;
     publishedAt: Schema.Attribute.DateTime;
+    size: Schema.Attribute.String;
     statusP: Schema.Attribute.Enumeration<['Pending', 'Complete']> &
       Schema.Attribute.DefaultTo<'Pending'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiServiceService extends Struct.CollectionTypeSchema {
+  collectionName: 'services';
+  info: {
+    description: '';
+    displayName: 'Service';
+    pluralName: 'services';
+    singularName: 'service';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service.service'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    service: Schema.Attribute.String;
+    slug: Schema.Attribute.UID<'service'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSizeJerseySizeJersey extends Struct.CollectionTypeSchema {
+  collectionName: 'size_jerseys';
+  info: {
+    description: '';
+    displayName: 'Size_Jersey';
+    pluralName: 'size-jerseys';
+    singularName: 'size-jersey';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::size-jersey.size-jersey'
+    > &
+      Schema.Attribute.Private;
+    package: Schema.Attribute.Relation<'manyToOne', 'api::package.package'>;
+    publishedAt: Schema.Attribute.DateTime;
+    size: Schema.Attribute.String;
+    slug: Schema.Attribute.UID<'size'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1278,9 +1431,12 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
+    author_scs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::author-sc.author-sc'
+    >;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1338,11 +1494,15 @@ declare module '@strapi/strapi' {
       'api::author-sc.author-sc': ApiAuthorScAuthorSc;
       'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
+      'api::event-category-sc.event-category-sc': ApiEventCategoryScEventCategorySc;
       'api::event-category.event-category': ApiEventCategoryEventCategory;
       'api::event.event': ApiEventEvent;
       'api::global.global': ApiGlobalGlobal;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
+      'api::package.package': ApiPackagePackage;
       'api::participant.participant': ApiParticipantParticipant;
+      'api::service.service': ApiServiceService;
+      'api::size-jersey.size-jersey': ApiSizeJerseySizeJersey;
       'api::state.state': ApiStateState;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

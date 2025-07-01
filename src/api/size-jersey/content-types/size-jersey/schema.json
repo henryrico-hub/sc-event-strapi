@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "size_jerseys",
+  "info": {
+    "singularName": "size-jersey",
+    "pluralName": "size-jerseys",
+    "displayName": "Size_Jersey",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "size": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "size"
+    },
+    "package": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::package.package",
+      "inversedBy": "size_jerseys"
+    }
+  }
+}

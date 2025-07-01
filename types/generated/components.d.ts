@@ -3,11 +3,27 @@ import type { Schema, Struct } from '@strapi/strapi';
 export interface EventoDistancias extends Struct.ComponentSchema {
   collectionName: 'components_evento_distancias';
   info: {
+    description: '';
     displayName: 'Distancias';
     icon: 'bulletList';
   };
   attributes: {
+    fd: Schema.Attribute.Boolean;
     precio: Schema.Attribute.String;
+  };
+}
+
+export interface EventoNew extends Struct.ComponentSchema {
+  collectionName: 'components_evento_news';
+  info: {
+    description: '';
+    displayName: 'new';
+    icon: 'archive';
+  };
+  attributes: {
+    main_color: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::color-picker.color'>;
+    netext: Schema.Attribute.String;
   };
 }
 
@@ -77,6 +93,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'evento.distancias': EventoDistancias;
+      'evento.new': EventoNew;
       'shared.media': SharedMedia;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;

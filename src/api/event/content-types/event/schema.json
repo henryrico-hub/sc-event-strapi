@@ -134,6 +134,32 @@
     },
     "digital_payment": {
       "type": "blocks"
+    },
+    "event_category_scs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event-category-sc.event-category-sc"
+    },
+    "services_scs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service.service"
+    },
+    "packages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::package.package"
+    },
+    "consecNumberPart": {
+      "type": "integer",
+      "default": 0,
+      "min": 0,
+      "required": true
+    },
+    "main_color": {
+      "type": "customField",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+      "customField": "plugin::color-picker.color"
     }
   }
 }
