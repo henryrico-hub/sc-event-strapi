@@ -4,17 +4,18 @@
   "private": true,
   "description": "A Strapi application",
   "scripts": {
-    "build": "strapi build",
-    "deploy": "strapi deploy",
-    "develop": "strapi develop",
+    "develop": "cross-env NODE_ENV=development strapi develop",
+    "build": "cross-env NODE_ENV=production strapi build",
+    "start": "cross-env NODE_ENV=production strapi start",
+    "deploy": "npm run build && npm run start",
     "seed:example": "node ./scripts/seed.js",
-    "start": "strapi start",
     "strapi": "strapi"
   },
   "dependencies": {
     "@strapi/plugin-cloud": "5.12.7",
     "@strapi/plugin-color-picker": "^5.16.1",
     "@strapi/plugin-users-permissions": "5.12.7",
+    "@strapi/provider-upload-cloudinary": "^5.17.0",
     "@strapi/strapi": "5.12.7",
     "better-sqlite3": "11.3.0",
     "fs-extra": "^10.0.0",
@@ -29,6 +30,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "cross-env": "^7.0.3",
     "typescript": "^5"
   },
   "engines": {
